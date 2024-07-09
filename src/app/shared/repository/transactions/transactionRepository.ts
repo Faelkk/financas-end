@@ -18,11 +18,13 @@ export const transactionRepository = {
     year: string;
   }) {
     let query = `
-      SELECT * FROM Transactions
-      WHERE userId = '${userId}' 
-        AND MONTH(date) = '${month}' 
-        AND YEAR(date) = '${year}'
-    `;
+    SELECT * FROM Transactions
+    WHERE userId = '${userId}' 
+      AND MONTH(date) = '${month}' 
+      AND YEAR(date) = '${year}'
+      AND date >= DATEADD(DAY, -30, GETDATE())
+    ORDER BY date DESC
+  `;
 
     if (type) {
       query += ` AND transactionType = '${type}'`;
